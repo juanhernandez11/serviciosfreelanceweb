@@ -15,7 +15,7 @@ const ContactForm = () => {
     setStatus('sending');
     
     try {
-      const response = await fetch('http://localhost:3001/api/contact', {
+      const response = await fetch('/.netlify/functions/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
