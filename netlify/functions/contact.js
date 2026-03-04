@@ -1,3 +1,5 @@
+const nodemailer = require('nodemailer');
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -28,69 +30,40 @@ exports.handler = async (event) => {
       };
     }
 
-    console.log('Contacto recibido:', { name, email, company });
-
-    const https = require('https');
-    const emailTo = process.env.EMAIL_USER;
-
-    const postData = JSON.stringify({
-      name: name,
-      email: email,
-      company: company || 'No especificada',
-      message: message,
-      _subject: `Nuevo contacto de ${name}`,
-      _template: 'table'
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
     });
 
-    const options = {
-      hostname: 'formsubmit.co',
-      path: `/ajax/${emailTo}`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Content-Length': Buffer.byteLength(postData)
-      }
-    };
-
-    await new Promise((resolve, reject) => {
-      const req = https.request(options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          console.log('FormSubmit response:', res.statusCode, data);
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolve();
-          } else {
-            reject(new Error('FormSubmit error: ' + res.statusCode));
-          }
-        });
-      });
-      req.on('error', (e) => {
-        console.error('Request error:', e);
-        reject(e);
-      });
-      req.write(postData);
-      req.end();
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: `Nuevo contacto de ${name}`,
+      html: `
+        <h2>Nuevo mensaje de contacto</h2>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Empresa:</strong> ${company || 'No especificada'}</p>
+        <p><strong>Mensaje:</strong></p>
+        <p>${message}</p>
+      `,
+      replyTo: email
     });
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ 
-        success: true, 
-        message: 'Mensaje enviado correctamente' 
-      })
+      body: JSON.stringify({ success: true, message: 'Mensaje enviado' })
     };
   } catch (error) {
     console.error('Error:', error);
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ 
-        success: true, 
-        message: 'Mensaje recibido' 
-      })
+      body: JSON.stringify({ success: true, message: 'Mensaje recibido' })
     };
   }
 };
