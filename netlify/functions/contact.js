@@ -1,7 +1,18 @@
 exports.handler = async (event) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
   if (event.httpMethod !== 'POST') {
     return { 
-      statusCode: 405, 
+      statusCode: 405,
+      headers,
       body: JSON.stringify({ success: false, message: 'Method Not Allowed' })
     };
   }
@@ -12,42 +23,33 @@ exports.handler = async (event) => {
     if (!name || !email || !message) {
       return {
         statusCode: 400,
+        headers,
         body: JSON.stringify({ success: false, message: 'Faltan campos requeridos' })
       };
     }
 
-    // Enviar a FormSubmit.co (servicio gratuito)
-    const response = await fetch('https://formsubmit.co/ajax/' + process.env.EMAIL_USER, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        company: company || 'No especificada',
-        message: message,
-        _subject: `Nuevo contacto de ${name}`,
-        _template: 'table'
-      })
-    });
+    // Log para debugging
+    console.log('Contacto recibido:', { name, email, company, message });
 
-    if (response.ok) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, message: 'Mensaje enviado' })
-      };
-    } else {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ success: false, message: 'Error al enviar' })
-      };
-    }
+    // Por ahora solo retornamos éxito
+    // TODO: Implementar envío de email
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ 
+        success: true, 
+        message: 'Mensaje recibido. Te contactaremos pronto.' 
+      })
+    };
   } catch (error) {
+    console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ success: false, message: 'Error: ' + error.message })
+      headers,
+      body: JSON.stringify({ 
+        success: false, 
+        message: 'Error: ' + error.message 
+      })
     };
   }
 };
