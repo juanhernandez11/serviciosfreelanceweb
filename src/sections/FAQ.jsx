@@ -40,17 +40,17 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-slate-50">
+    <section className="py-20 md:py-32 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 rounded-full mb-6">
-            <HelpCircle size={16} className="text-indigo-600" />
-            <span className="text-xs font-black text-indigo-600 uppercase tracking-widest">Preguntas Frecuentes</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/40 rounded-full mb-6">
+            <HelpCircle size={16} className="text-indigo-600 dark:text-indigo-400" />
+            <span className="text-xs font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">Preguntas Frecuentes</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 text-slate-900 dark:text-white">
             ¿Tienes <span className="text-indigo-600">dudas?</span>
           </h2>
-          <p className="text-base sm:text-lg text-slate-500 font-medium">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-medium">
             Aquí respondemos las preguntas más comunes de nuestros clientes
           </p>
         </div>
@@ -59,13 +59,15 @@ const FAQ = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl border-2 border-slate-100 overflow-hidden transition-all hover:border-indigo-200"
+              className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 overflow-hidden transition-all hover:border-indigo-200 dark:hover:border-indigo-500"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
                 className="w-full px-6 sm:px-8 py-6 flex items-start sm:items-center justify-between gap-4 text-left group"
               >
-                <span className="font-black text-base sm:text-lg text-slate-900 group-hover:text-indigo-600 transition-colors flex-1">
+                <span className="font-black text-base sm:text-lg text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex-1">
                   {faq.question}
                 </span>
                 <ChevronDown
@@ -77,11 +79,14 @@ const FAQ = () => {
               </button>
               
               <div
+                id={`faq-answer-${index}`}
+                role="region"
+                aria-label={faq.question}
                 className={`overflow-hidden transition-all duration-300 ${
                   openIndex === index ? 'max-h-96' : 'max-h-0'
                 }`}
               >
-                <div className="px-6 sm:px-8 pb-6 text-sm sm:text-base text-slate-600 leading-relaxed border-t border-slate-100 pt-6">
+                <div className="px-6 sm:px-8 pb-6 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-6">
                   {faq.answer}
                 </div>
               </div>
@@ -96,7 +101,7 @@ const FAQ = () => {
               Contáctanos directamente y resolveremos todas tus dudas en minutos
             </p>
             <a
-              href="#contacto-form"
+              href="#c4b8f2e7a315"
               className="inline-block bg-white text-indigo-600 px-8 sm:px-10 py-4 rounded-xl font-black uppercase tracking-widest text-xs sm:text-sm hover:bg-indigo-50 transition-all shadow-xl"
             >
               Hablar con un Experto

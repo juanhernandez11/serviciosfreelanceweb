@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Send, CheckCircle, AlertCircle, Mail, User, Building, MessageSquare } from 'lucide-react';
+import { ROUTES } from '../data/routes';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -121,17 +123,20 @@ const ContactForm = () => {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
+                    <label htmlFor="name" className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
                       Nombre completo *
                     </label>
                     <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} aria-hidden="true" />
                       <input
+                        id="name"
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         required
+                        aria-required="true"
+                        autoComplete="name"
                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-900 font-medium focus:border-indigo-500 focus:outline-none transition-colors"
                         placeholder="Juan Pérez"
                       />
@@ -139,17 +144,20 @@ const ContactForm = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
+                    <label htmlFor="email" className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
                       Email *
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} aria-hidden="true" />
                       <input
+                        id="email"
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         required
+                        aria-required="true"
+                        autoComplete="email"
                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-900 font-medium focus:border-indigo-500 focus:outline-none transition-colors"
                         placeholder="juan@empresa.com"
                       />
@@ -157,16 +165,18 @@ const ContactForm = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
+                    <label htmlFor="company" className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
                       Empresa
                     </label>
                     <div className="relative">
-                      <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                      <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} aria-hidden="true" />
                       <input
+                        id="company"
                         type="text"
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
+                        autoComplete="organization"
                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-900 font-medium focus:border-indigo-500 focus:outline-none transition-colors"
                         placeholder="Mi Empresa S.A."
                       />
@@ -174,16 +184,18 @@ const ContactForm = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
+                    <label htmlFor="message" className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
                       Cuéntanos sobre tu proyecto *
                     </label>
                     <div className="relative">
-                      <MessageSquare className="absolute left-4 top-4 text-slate-400" size={20} />
+                      <MessageSquare className="absolute left-4 top-4 text-slate-400" size={20} aria-hidden="true" />
                       <textarea
+                        id="message"
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
                         required
+                        aria-required="true"
                         rows="4"
                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-900 font-medium focus:border-indigo-500 focus:outline-none transition-colors resize-none"
                         placeholder="Necesito un sitio web para mi negocio..."
@@ -210,7 +222,8 @@ const ContactForm = () => {
                   </button>
 
                   <p className="text-xs text-slate-500 text-center">
-                    Al enviar aceptas nuestra política de privacidad
+                    Al enviar aceptas nuestra{' '}
+                    <Link to={ROUTES.privacy} className="underline hover:text-indigo-600 transition-colors">política de privacidad</Link>
                   </p>
                 </form>
               )}

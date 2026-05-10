@@ -72,9 +72,17 @@ export const successCases = [
   }
 ];
 
+// IDs reales de las secciones mapeados a hashes (sha256 truncado del nombre)
+export const sectionMap = {
+  'b3c7f1a2d509': 'soluciones',
+  'f8e2a4c1b736': 'metodologia',
+  'a1d5e9f3c028': 'casos-de-exito',
+  'c4b8f2e7a315': 'contacto-form',
+};
+
 export const navLinks = [
-  { name: 'Soluciones', href: '#soluciones' },
-  { name: 'Metodología', href: '#metodología' },
-  { name: 'Casos de Éxito', href: '#casos-de-éxito' },
-  { name: 'Contacto', href: '#contacto-form' }
+  { name: 'Soluciones',    href: '#b3c7f1a2d509' },
+  { name: 'Metodología',  href: '#f8e2a4c1b736' },
+  { name: 'Casos de Éxito', href: '#a1d5e9f3c028' },
+  { name: 'Contacto',     href: '#c4b8f2e7a315' },
 ];
